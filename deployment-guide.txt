@@ -1,0 +1,75 @@
+Laptopia & GameHub - Deployment Guide
+========================================
+
+Congratulations on getting your website built! It is currently deployed and live at:
+https://FasihKhan224.github.io/laptopia-gamehub/
+
+This guide will show you how to buy a custom domain (like laptopia.com) and connect it to your site, as well as how to switch to a real database when you're ready.
+
+---
+STEP 1: BUYING A CUSTOM DOMAIN
+---
+
+1. Go to a domain registrar like Namecheap (https://www.namecheap.com) or GoDaddy (https://www.godaddy.com).
+2. Search for your desired name, for example: `laptopia.pk` or `laptopiagamehub.com`.
+3. Add it to your cart and complete the purchase.
+
+---
+STEP 2: CONNECTING YOUR DOMAIN TO GITHUB PAGES
+---
+
+Once you own the domain, you need to point it to your GitHub Pages site.
+
+1. Configure DNS on your Domain Registrar:
+   - Log into your Namecheap/GoDaddy account and find "DNS Settings" or "Manage DNS" for your domain.
+   - Add four "A Records" pointing to GitHub's IP addresses:
+     - 185.199.108.153
+     - 185.199.109.153
+     - 185.199.110.153
+     - 185.199.111.153
+   - Add a "CNAME Record" with host "www" pointing to `FasihKhan224.github.io`.
+
+2. Add the Domain to GitHub:
+   - Go to your GitHub repository: https://github.com/FasihKhan224/laptopia-gamehub
+   - Click "Settings" (the gear icon at the top).
+   - On the left sidebar, click "Pages".
+   - Scroll down to the "Custom domain" section.
+   - Type in your new domain (e.g., `laptopia.pk`) and click "Save".
+   - GitHub will check the DNS. Once verified, check the "Enforce HTTPS" box to secure your site.
+
+It may take up to 24 hours for the DNS changes to propagate globally, but usually it works within an hour.
+
+---
+STEP 3: CONNECTING THE DATABASE (SUPABASE)
+---
+
+Right now, your admin panel and orders are saved in the browser (localStorage) for demonstration purposes. This means only you can see the orders you make on your computer. 
+
+To make it fully workable for real customers, connect it to a free Supabase database:
+
+1. Create a Database:
+   - Go to https://supabase.com and create a free account.
+   - Click "New Project" and give it a name (e.g., LaptopiaDB).
+   - Create a strong database password and click "Create new project". Wait for it to provision.
+
+2. Setup the Tables:
+   - In Supabase, go to the "SQL Editor" on the left menu.
+   - Open the file `supabase/schema.sql` from your project folder.
+   - Copy all the text inside `schema.sql`, paste it into the Supabase SQL Editor, and click "Run".
+   - This creates all the necessary tables (products, orders, inquiries).
+
+3. Connect Your Code:
+   - In Supabase, go to "Project Settings" (gear icon) > "API".
+   - Copy your "Project URL" and "anon public" API Key.
+   - Open `js/supabase-config.js` in your code editor.
+   - Paste the URL and Key into lines 8 and 9 where it says `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
+
+4. Deploy Database Changes:
+   - Once you save `js/supabase-config.js`, you need to push the changes to GitHub.
+   - Open your terminal and run:
+     git add .
+     git commit -m "Connected Supabase database"
+     git push
+   - GitHub Actions will automatically deploy the changes to your live site!
+
+Now your admin panel will securely store orders in the cloud!
