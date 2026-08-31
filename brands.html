@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shop gaming laptops by top brands at Laptopia & GameHub.">
+  <title>Laptopia & GameHub - Brands</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="logo">
+      <span class="logo-primary">LAPTOPIA</span>
+      <span class="logo-secondary">&amp; GameHub</span>
+    </a>
+    <a href="contact.html" class="btn-contact glass">Contact Us</a>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-primary">LAPTOPIA</span>
+        <span class="logo-secondary">&amp; GameHub</span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose">&times;</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Home</a>
+      <a href="brands.html" class="sidebar-link"><span class="sidebar-icon">💻</span> Brands</a>
+      <a href="cart.html" class="sidebar-link"><span class="sidebar-icon">🛒</span> Cart <span class="cart-badge" id="cartBadge"></span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4 class="sidebar-title">Shop by Brand</h4>
+      <div class="sidebar-brands">
+        <a href="brand.html?brand=hp" class="brand-link">HP</a>
+        <a href="brand.html?brand=dell" class="brand-link">Dell</a>
+        <a href="brand.html?brand=lenovo" class="brand-link">Lenovo</a>
+        <a href="brand.html?brand=asus" class="brand-link">ASUS</a>
+        <a href="brand.html?brand=acer" class="brand-link">Acer</a>
+        <a href="brand.html?brand=msi" class="brand-link">MSI</a>
+        <a href="brand.html?brand=razer" class="brand-link">Razer</a>
+        <a href="brand.html?brand=apple" class="brand-link">Apple</a>
+        <a href="brand.html?brand=alienware" class="brand-link">Alienware</a>
+        <a href="brand.html?brand=gigabyte" class="brand-link">Gigabyte</a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <section class="section" style="padding-top: 8rem;">
+    <div class="container">
+      <div class="glass" style="padding: 2rem; margin-bottom: 3rem; text-align: center; border-radius: 1rem;">
+        <h1 class="section-title" style="margin-bottom: 1rem;">Top <span class="accent">Brands</span></h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Explore our extensive collection of gaming laptops from the world's leading manufacturers.</p>
+      </div>
+
+      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem;" id="brandsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: rgba(0,0,0,0.3);">
+    <div class="container">
+      <h2 class="section-title">All <span class="accent">Products</span></h2>
+      <div class="grid grid-3" id="allProductsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content container">
+      <span>© 2024 Laptopia & GameHub. All rights reserved.</span>
+      <span>Built with 💙</span>
+    </div>
+  </footer>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/products.js"></script>
+  <script>
+    const BRANDS = ['HP', 'Dell', 'Lenovo', 'ASUS', 'Acer', 'MSI', 'Razer', 'Apple', 'Alienware', 'Gigabyte'];
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        let products = [];
+        if (window.DB && typeof window.DB.getProducts === 'function') {
+          products = await DB.getProducts();
+        } else {
+          console.warn('DB.getProducts is not available yet.');
+        }
+        
+        // Count products per brand
+        const brandCounts = {};
+        products.forEach(p => {
+          const b = p.brand;
+          if (b) brandCounts[b] = (brandCounts[b] || 0) + 1;
+        });
+
+        const brandsGrid = document.getElementById('brandsGrid');
+        brandsGrid.innerHTML = BRANDS.map(brand => `
+          <a href="brand.html?brand=${brand.toLowerCase()}" class="glass-card" style="padding: 1.5rem; text-align: center; display: block; text-decoration: none; color: inherit; transition: transform 0.3s;">
+            <div class="glass" style="width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 1rem auto; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,47,247,0.2)); color: white;">
+              ${brand[0]}
+            </div>
+            <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.25rem;">${brand}</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted);">${brandCounts[brand] || 0} Laptops</p>
+          </a>
+        `).join('');
+
+        const allProductsGrid = document.getElementById('allProductsGrid');
+        if (products.length > 0) {
+          allProductsGrid.innerHTML = products.map(p => createProductCard(p)).join('');
+        } else {
+          allProductsGrid.innerHTML = '<p style="color: var(--text-muted); text-align: center; grid-column: 1 / -1; padding: 2rem;">No products available.</p>';
+        }
+
+      } catch (e) {
+        console.error('Failed to load products', e);
+      }
+    });
+  </script>
+</body>
+</html>

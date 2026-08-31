@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cart and Checkout for Laptopia & GameHub">
+  <title>Laptopia & GameHub - Cart</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="logo">
+      <span class="logo-primary">LAPTOPIA</span>
+      <span class="logo-secondary">&amp; GameHub</span>
+    </a>
+    <a href="contact.html" class="btn-contact glass">Contact Us</a>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-primary">LAPTOPIA</span>
+        <span class="logo-secondary">&amp; GameHub</span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose">&times;</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Home</a>
+      <a href="brands.html" class="sidebar-link"><span class="sidebar-icon">💻</span> Brands</a>
+      <a href="cart.html" class="sidebar-link"><span class="sidebar-icon">🛒</span> Cart <span class="cart-badge" id="cartBadge"></span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4 class="sidebar-title">Shop by Brand</h4>
+      <div class="sidebar-brands">
+        <a href="brand.html?brand=hp" class="brand-link">HP</a>
+        <a href="brand.html?brand=dell" class="brand-link">Dell</a>
+        <a href="brand.html?brand=lenovo" class="brand-link">Lenovo</a>
+        <a href="brand.html?brand=asus" class="brand-link">ASUS</a>
+        <a href="brand.html?brand=acer" class="brand-link">Acer</a>
+        <a href="brand.html?brand=msi" class="brand-link">MSI</a>
+        <a href="brand.html?brand=razer" class="brand-link">Razer</a>
+        <a href="brand.html?brand=apple" class="brand-link">Apple</a>
+        <a href="brand.html?brand=alienware" class="brand-link">Alienware</a>
+        <a href="brand.html?brand=gigabyte" class="brand-link">Gigabyte</a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="page-content">
+    <div class="container">
+      <h1 class="section-title">Shopping <span class="accent">Cart</span></h1>
+      
+      <!-- Cart Items Section -->
+      <div id="cartContent">
+        <!-- Populated by JS: either cart items or empty state -->
+      </div>
+      
+      <!-- Checkout Section (hidden when cart empty) -->
+      <div id="checkoutSection" style="display:none">
+        <div class="grid grid-2" style="gap:40px; margin-top:40px;">
+          <!-- Left: Cart Summary -->
+          <div>
+            <h2 class="section-title" style="font-size:1.3rem">Order Summary</h2>
+            <div class="cart-summary glass-card" id="cartSummary">
+              <!-- Items list with prices, total -->
+            </div>
+          </div>
+          
+          <!-- Right: Checkout Form -->
+          <div>
+            <h2 class="section-title" style="font-size:1.3rem">Your <span class="accent">Details</span></h2>
+            <form class="glass-card" id="checkoutForm" style="padding:32px">
+              <div class="form-group">
+                <label class="form-label">Full Name *</label>
+                <input type="text" class="form-input" name="name" required placeholder="Enter your full name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone Number *</label>
+                <input type="tel" class="form-input" name="phone" required placeholder="e.g., +92 300 1234567">
+              </div>
+              <div class="form-group">
+                <label class="form-label">WhatsApp Number *</label>
+                <input type="tel" class="form-input" name="whatsapp" required placeholder="e.g., +92 300 1234567">
+                <small style="color:var(--text-muted);font-size:0.8rem">We'll contact you on WhatsApp to confirm your order</small>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Delivery Address *</label>
+                <textarea class="form-input form-textarea" name="address" required placeholder="Enter your full delivery address"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Order Notes (Optional)</label>
+                <textarea class="form-input form-textarea" name="notes" placeholder="Any special requests or notes..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1.1rem">
+                Place Order via WhatsApp
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content container">
+      <span>© 2024 Laptopia & GameHub. All rights reserved.</span>
+      <span>Built with 💙</span>
+    </div>
+  </footer>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+</html>

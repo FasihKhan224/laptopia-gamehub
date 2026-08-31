@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Product detail - Laptopia & GameHub">
+  <title>Laptopia & GameHub - Product Detail</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+    .product-image-container { position: relative; padding: 20px; border-radius: 16px; display: flex; align-items: center; justify-content: center; min-height: 400px; }
+    .product-image-container img { max-width: 100%; height: auto; border-radius: 8px; }
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0; }
+    .spec-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+    .spec-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+    .spec-value { font-weight: 500; color: white; }
+    .quantity-selector { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+    .qty-btn { background: rgba(255,255,255,0.1); border: none; color: white; width: 36px; height: 36px; border-radius: 18px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+    .qty-btn:hover { background: rgba(0,212,255,0.2); }
+    .qty-input { width: 50px; text-align: center; background: transparent; border: none; color: white; font-size: 1.1rem; font-weight: bold; outline: none; }
+    .action-buttons { display: flex; gap: 15px; }
+    .btn-whatsapp { background: #25D366; color: white; border: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; transition: all 0.3s; }
+    .btn-whatsapp:hover { background: #1ebe5d; transform: scale(1.02); }
+    
+    @media (max-width: 768px) {
+      .product-detail-grid { grid-template-columns: 1fr; }
+      .action-buttons { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="logo">
+      <span class="logo-primary">LAPTOPIA</span>
+      <span class="logo-secondary">&amp; GameHub</span>
+    </a>
+    <a href="contact.html" class="btn-contact glass">Contact Us</a>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-primary">LAPTOPIA</span>
+        <span class="logo-secondary">&amp; GameHub</span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose">&times;</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Home</a>
+      <a href="brands.html" class="sidebar-link"><span class="sidebar-icon">💻</span> Brands</a>
+      <a href="cart.html" class="sidebar-link"><span class="sidebar-icon">🛒</span> Cart <span class="cart-badge" id="cartBadge"></span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4 class="sidebar-title">Shop by Brand</h4>
+      <div class="sidebar-brands">
+        <a href="brand.html?brand=hp" class="brand-link">HP</a>
+        <a href="brand.html?brand=dell" class="brand-link">Dell</a>
+        <a href="brand.html?brand=lenovo" class="brand-link">Lenovo</a>
+        <a href="brand.html?brand=asus" class="brand-link">ASUS</a>
+        <a href="brand.html?brand=acer" class="brand-link">Acer</a>
+        <a href="brand.html?brand=msi" class="brand-link">MSI</a>
+        <a href="brand.html?brand=razer" class="brand-link">Razer</a>
+        <a href="brand.html?brand=apple" class="brand-link">Apple</a>
+        <a href="brand.html?brand=alienware" class="brand-link">Alienware</a>
+        <a href="brand.html?brand=gigabyte" class="brand-link">Gigabyte</a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <section class="section" style="padding-top: 8rem; padding-bottom: 4rem;">
+    <div class="container" id="productContainer">
+      <div style="text-align: center; padding: 5rem 0;" id="loadingState">
+        <div style="font-size: 1.5rem; color: var(--accent-cyan);">Loading product details...</div>
+      </div>
+      <!-- Rendered product will go here -->
+    </div>
+  </section>
+
+  <section class="section" style="background: rgba(0,0,0,0.2);">
+    <div class="container">
+      <h2 class="section-title">Related <span class="accent">Products</span></h2>
+      <div class="grid grid-3" id="relatedProductsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content container">
+      <span>© 2024 Laptopia & GameHub. All rights reserved.</span>
+      <span>Built with 💙</span>
+    </div>
+  </footer>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/products.js"></script>
+  <script>
+    let currentProduct = null;
+    let quantity = 1;
+
+    function updateQty(change) {
+      const newQty = quantity + change;
+      if (newQty >= 1 && newQty <= (currentProduct?.stock || 10)) {
+        quantity = newQty;
+        document.getElementById('qtyInput').value = quantity;
+      }
+    }
+
+    function addToCartHandler() {
+      if (!currentProduct) return;
+      const itemToAdd = { ...currentProduct, quantity };
+      if (window.CartManager && window.CartManager.addItem) {
+        CartManager.addItem(itemToAdd);
+        alert('Added to cart!'); 
+      } else {
+        console.error('CartManager not available');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      
+      if (!productId) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      try {
+        if (window.DB && typeof window.DB.getProduct === 'function') {
+          currentProduct = await DB.getProduct(productId);
+        } else {
+          console.warn('DB.getProduct is not available yet.');
+        }
+
+        if (!currentProduct) {
+          document.getElementById('productContainer').innerHTML = '<h2 style="text-align: center; font-size: 1.5rem; color: #ff6b6b;">Product not found.</h2>';
+          return;
+        }
+
+        document.title = `${currentProduct.name} - Laptopia & GameHub`;
+
+        const specs = currentProduct.specs || {};
+        const priceFormatted = currentProduct.price != null ? currentProduct.price.toLocaleString() : '0';
+        
+        const html = `
+          <div class="product-detail-grid">
+            <div class="glass product-image-container">
+              <img src="${currentProduct.image_url || `https://placehold.co/800x600/1a1a2e/00d4ff?text=${encodeURIComponent(currentProduct.name)}`}" alt="${currentProduct.name}">
+            </div>
+            <div>
+              <span style="display: inline-block; background: rgba(0,212,255,0.2); color: var(--accent-cyan); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; border: 1px solid rgba(0,212,255,0.3);">${currentProduct.brand}</span>
+              <h1 style="font-size: 2.25rem; font-family: 'Space Grotesk', sans-serif; font-weight: bold; margin-bottom: 1rem;">${currentProduct.name}</h1>
+              <div style="font-size: 1.875rem; font-weight: bold; background: linear-gradient(to right, var(--accent-cyan), var(--secondary-purple)); -webkit-background-clip: text; color: transparent; margin-bottom: 1.5rem;">$${priceFormatted}</div>
+              
+              <p style="color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6;">${currentProduct.description || 'Premium gaming laptop delivering uncompromised performance and stunning visuals for the ultimate gaming experience.'}</p>
+              
+              <div class="specs-grid">
+                <div class="spec-item"><span class="spec-label">CPU</span><span class="spec-value">${specs.cpu || 'N/A'}</span></div>
+                <div class="spec-item"><span class="spec-label">GPU</span><span class="spec-value">${specs.gpu || 'N/A'}</span></div>
+                <div class="spec-item"><span class="spec-label">RAM</span><span class="spec-value">${specs.ram || 'N/A'}</span></div>
+                <div class="spec-item"><span class="spec-label">Storage</span><span class="spec-value">${specs.storage || 'N/A'}</span></div>
+                <div class="spec-item"><span class="spec-label">Display</span><span class="spec-value">${specs.display || 'N/A'}</span></div>
+                <div class="spec-item"><span class="spec-label">Battery</span><span class="spec-value">${specs.battery || 'N/A'}</span></div>
+              </div>
+
+              <div class="quantity-selector">
+                <span style="color: var(--text-muted);">Quantity:</span>
+                <button class="qty-btn" onclick="updateQty(-1)">-</button>
+                <input type="text" id="qtyInput" class="qty-input" value="1" readonly>
+                <button class="qty-btn" onclick="updateQty(1)">+</button>
+              </div>
+
+              <div class="action-buttons">
+                <button class="btn btn-primary" style="flex: 1; padding: 1rem; font-size: 1.125rem;" onclick="addToCartHandler()">🛒 Add to Cart</button>
+                <a href="https://wa.me/1234567890?text=${encodeURIComponent('Hi, I want to buy: ' + currentProduct.name + ' for $' + currentProduct.price)}" target="_blank" class="btn-whatsapp" style="flex: 1;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  Buy on WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+        document.getElementById('productContainer').innerHTML = html;
+
+        // Load related products
+        if (window.DB && typeof window.DB.getProductsByBrand === 'function') {
+          const relatedProds = await DB.getProductsByBrand(currentProduct.brand);
+          const filteredRelated = relatedProds.filter(p => p.id !== currentProduct.id).slice(0, 3);
+          
+          if (filteredRelated.length > 0) {
+            document.getElementById('relatedProductsGrid').innerHTML = filteredRelated.map(p => createProductCard(p)).join('');
+          } else {
+            document.getElementById('relatedProductsGrid').innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 2rem 0;">No related products found.</p>';
+          }
+        }
+
+      } catch (e) {
+        console.error('Error loading product details', e);
+        document.getElementById('productContainer').innerHTML = '<h2 style="text-align: center; font-size: 1.5rem; color: #ff6b6b;">Error loading product.</h2>';
+      }
+    });
+  </script>
+</body>
+</html>

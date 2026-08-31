@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Laptopia & GameHub">
+  <title>Laptopia & GameHub - Contact Us</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    @media (min-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .contact-info-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .contact-info-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .contact-info-icon {
+      font-size: 2rem;
+      background: rgba(255,255,255,0.05);
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .contact-info-card {
+      padding: 32px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="logo">
+      <span class="logo-primary">LAPTOPIA</span>
+      <span class="logo-secondary">&amp; GameHub</span>
+    </a>
+    <a href="contact.html" class="btn-contact glass">Contact Us</a>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-primary">LAPTOPIA</span>
+        <span class="logo-secondary">&amp; GameHub</span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose">&times;</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Home</a>
+      <a href="brands.html" class="sidebar-link"><span class="sidebar-icon">💻</span> Brands</a>
+      <a href="cart.html" class="sidebar-link"><span class="sidebar-icon">🛒</span> Cart <span class="cart-badge" id="cartBadge"></span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4 class="sidebar-title">Shop by Brand</h4>
+      <div class="sidebar-brands">
+        <a href="brand.html?brand=hp" class="brand-link">HP</a>
+        <a href="brand.html?brand=dell" class="brand-link">Dell</a>
+        <a href="brand.html?brand=lenovo" class="brand-link">Lenovo</a>
+        <a href="brand.html?brand=asus" class="brand-link">ASUS</a>
+        <a href="brand.html?brand=acer" class="brand-link">Acer</a>
+        <a href="brand.html?brand=msi" class="brand-link">MSI</a>
+        <a href="brand.html?brand=razer" class="brand-link">Razer</a>
+        <a href="brand.html?brand=apple" class="brand-link">Apple</a>
+        <a href="brand.html?brand=alienware" class="brand-link">Alienware</a>
+        <a href="brand.html?brand=gigabyte" class="brand-link">Gigabyte</a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="page-content">
+    <div class="container">
+      <h1 class="section-title">Contact <span class="accent">Us</span></h1>
+      <p class="section-subtitle">Have questions? We're here to help!</p>
+      
+      <div class="contact-grid">
+        <!-- Left: Contact Info -->
+        <div>
+          <div class="glass-card contact-info-card">
+            <!-- Contact items with icons -->
+            <div class="contact-info-item">
+              <div class="contact-info-icon">📍</div>
+              <div>
+                <h4 style="margin-bottom: 4px;">Visit Our Store</h4>
+                <p style="color: var(--text-muted);">Shop #42, Tech Plaza, Islamabad, Pakistan</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">📞</div>
+              <div>
+                <h4 style="margin-bottom: 4px;">Call Us</h4>
+                <p style="color: var(--text-muted);">+92 300 1234567</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">💬</div>
+              <div>
+                <h4 style="margin-bottom: 4px;">WhatsApp</h4>
+                <p style="color: var(--text-muted);">+92 300 1234567</p>
+                <a href="https://wa.me/923001234567" target="_blank" class="btn btn-primary" style="margin-top:8px; display:inline-block; padding: 8px 16px; font-size: 0.9rem;">💬 Chat on WhatsApp</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">✉️</div>
+              <div>
+                <h4 style="margin-bottom: 4px;">Email</h4>
+                <p style="color: var(--text-muted);">info@laptopia.store</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon">🕐</div>
+              <div>
+                <h4 style="margin-bottom: 4px;">Business Hours</h4>
+                <p style="color: var(--text-muted);">Mon - Sat: 10:00 AM - 9:00 PM<br>Sunday: 12:00 PM - 7:00 PM</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Google Maps embed -->
+          <div class="glass-card" style="margin-top:24px;padding:4px;border-radius:16px;overflow:hidden">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3318.5!2d73.0479!3d33.7294!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQzJzQ2LjAiTiA3M8KwMDInNTIuNCJF!5e0!3m2!1sen!2s!4v1234567890" width="100%" height="250" style="border:0;border-radius:14px" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
+        
+        <!-- Right: Contact Form -->
+        <div>
+          <form class="glass-card" style="padding:32px" id="contactForm">
+            <h2 style="margin-bottom:24px">Send us a <span class="accent">Message</span></h2>
+            <div class="form-group">
+              <label class="form-label">Your Name *</label>
+              <input type="text" class="form-input" name="name" required placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-input" name="email" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message *</label>
+              <textarea class="form-input form-textarea" name="message" required placeholder="Tell us what you need..." rows="6"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:16px;">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Message sent successfully!</div>
+
+  <footer class="footer">
+    <div class="footer-content container">
+      <span>© 2024 Laptopia & GameHub. All rights reserved.</span>
+      <span>Built with 💙</span>
+    </div>
+  </footer>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const btn = form.querySelector('button[type="submit"]');
+      
+      const inquiry = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        btn.innerHTML = 'Sending...';
+        btn.disabled = true;
+
+        if (typeof DB !== 'undefined' && typeof DB.createInquiry === 'function') {
+          await DB.createInquiry(inquiry);
+        } else {
+          // Mock delay
+          await new Promise(r => setTimeout(r, 800));
+          console.log('Inquiry created:', inquiry);
+        }
+
+        form.reset();
+        
+        // Show toast
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+
+      } catch (err) {
+        console.error('Failed to send message:', err);
+        alert('Failed to send message. Please try again later.');
+      } finally {
+        btn.innerHTML = 'Send Message';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

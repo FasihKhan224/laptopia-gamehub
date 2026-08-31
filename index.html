@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pakistan's #1 Gaming Laptop Reseller - Best Prices, Best Quality, No Compromises.">
+  <title>Laptopia & GameHub - The Ultimate Gaming Laptop Experience</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="logo">
+      <span class="logo-primary">LAPTOPIA</span>
+      <span class="logo-secondary">&amp; GameHub</span>
+    </a>
+    <a href="contact.html" class="btn-contact glass">Contact Us</a>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-primary">LAPTOPIA</span>
+        <span class="logo-secondary">&amp; GameHub</span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose">&times;</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Home</a>
+      <a href="brands.html" class="sidebar-link"><span class="sidebar-icon">💻</span> Brands</a>
+      <a href="cart.html" class="sidebar-link"><span class="sidebar-icon">🛒</span> Cart <span class="cart-badge" id="cartBadge"></span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4 class="sidebar-title">Shop by Brand</h4>
+      <div class="sidebar-brands">
+        <a href="brand.html?brand=hp" class="brand-link">HP</a>
+        <a href="brand.html?brand=dell" class="brand-link">Dell</a>
+        <a href="brand.html?brand=lenovo" class="brand-link">Lenovo</a>
+        <a href="brand.html?brand=asus" class="brand-link">ASUS</a>
+        <a href="brand.html?brand=acer" class="brand-link">Acer</a>
+        <a href="brand.html?brand=msi" class="brand-link">MSI</a>
+        <a href="brand.html?brand=razer" class="brand-link">Razer</a>
+        <a href="brand.html?brand=apple" class="brand-link">Apple</a>
+        <a href="brand.html?brand=alienware" class="brand-link">Alienware</a>
+        <a href="brand.html?brand=gigabyte" class="brand-link">Gigabyte</a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Hero Section with scroll video -->
+  <section class="hero" id="heroSection">
+    <video id="heroVideo" muted playsinline preload="auto" class="hero-video">
+      <source src="assets/video/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">
+        The <span class="accent">Ultimate</span> Gaming<br>
+        Laptop <span class="accent">Experience</span>
+      </h1>
+      <p class="hero-subtitle">
+        Pakistan's #1 Gaming Laptop Reseller — Best Prices, Best Quality, No Compromises. 
+        From budget beasts to elite gaming rigs, we've got your perfect machine.
+      </p>
+      <div class="hero-cta">
+        <a href="brands.html" class="btn btn-primary">Explore Brands</a>
+        <a href="#featured" class="btn btn-secondary">Featured Laptops</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="section" id="whyUs">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">Why Choose <span class="accent">LAPTOPIA</span>?</h2>
+      <p class="section-subtitle animate-on-scroll">We're not just sellers — we're gamers who understand what you need</p>
+      <div class="grid grid-3">
+        <div class="glass-card text-center p-6 animate-on-scroll" style="padding: 2rem; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🏷️</div>
+          <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">Unbeatable Prices</h3>
+          <p style="color: var(--text-muted);">We cut out the middlemen to bring you the best gaming laptops at prices you won't find anywhere else in Pakistan.</p>
+        </div>
+        <div class="glass-card text-center p-6 animate-on-scroll" style="padding: 2rem; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+          <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">100% Genuine</h3>
+          <p style="color: var(--text-muted);">Every laptop comes with official warranty and guaranteed authenticity. We never compromise on quality.</p>
+        </div>
+        <div class="glass-card text-center p-6 animate-on-scroll" style="padding: 2rem; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎮</div>
+          <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">Gamer-First Support</h3>
+          <p style="color: var(--text-muted);">Our team of gaming enthusiasts provides expert advice and after-sales support to keep your rig running perfectly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Brands horizontal scroll -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">Top <span class="accent">Brands</span></h2>
+      <div class="featured-brands" id="featuredBrands" style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem;">
+        <a href="brand.html?brand=hp" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">HP</a>
+        <a href="brand.html?brand=dell" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">Dell</a>
+        <a href="brand.html?brand=lenovo" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">Lenovo</a>
+        <a href="brand.html?brand=asus" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">ASUS</a>
+        <a href="brand.html?brand=acer" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">Acer</a>
+        <a href="brand.html?brand=msi" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">MSI</a>
+        <a href="brand.html?brand=razer" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">Razer</a>
+        <a href="brand.html?brand=apple" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">Apple</a>
+        <a href="brand.html?brand=alienware" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">Alienware</a>
+        <a href="brand.html?brand=gigabyte" class="brand-pill glass" style="padding: 0.5rem 1.5rem; white-space: nowrap; border-radius: 999px;">Gigabyte</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="section" id="featured">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">Featured <span class="accent">Laptops</span></h2>
+      <p class="section-subtitle animate-on-scroll">Hand-picked selections for every gamer</p>
+      <div class="grid grid-3" id="featuredProducts">
+        <!-- Populated by JS -->
+      </div>
+      <div style="text-align:center; margin-top:40px">
+        <a href="brands.html" class="btn btn-secondary">View All Products →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content container">
+      <span>© 2024 Laptopia & GameHub. All rights reserved.</span>
+      <span>Built with 💙</span>
+    </div>
+  </footer>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/scroll-video.js"></script>
+  <script src="js/products.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        if (window.DB && typeof window.DB.getFeaturedProducts === 'function') {
+          const products = await DB.getFeaturedProducts();
+          const grid = document.getElementById('featuredProducts');
+          grid.innerHTML = products.map(p => createProductCard(p)).join('');
+        } else {
+          console.warn('DB.getFeaturedProducts is not available yet.');
+        }
+      } catch (e) {
+        console.error('Failed to load featured products', e);
+      }
+    });
+  </script>
+</body>
+</html>
