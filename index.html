@@ -52,54 +52,47 @@
   </aside>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- Hero Section with scroll video -->
-  <section class="hero" id="heroSection">
-    <video id="heroVideo" muted playsinline preload="auto" class="hero-video">
-      <source src="assets/video/hero.mp4" type="video/mp4">
-    </video>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1 class="hero-title">
-        The <span class="accent">Ultimate</span> Gaming<br>
-        Laptop <span class="accent">Experience</span>
-      </h1>
-      <p class="hero-subtitle">
-        Pakistan's #1 Gaming Laptop Reseller — Best Prices, Best Quality, No Compromises. 
-        From budget beasts to elite gaming rigs, we've got your perfect machine.
-      </p>
-      <div class="hero-cta">
-        <a href="brands.html" class="btn btn-primary">Explore Brands</a>
-        <a href="#featured" class="btn btn-secondary">Featured Laptops</a>
+  <!-- Hero Section with cinematic scroll video -->
+  <section class="hero" id="heroSection" style="height: 400vh; position: relative; z-index: 10;">
+    <div class="hero-sticky-container" style="position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+      <video id="heroVideo" muted playsinline preload="auto" class="hero-video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+        <source src="assets/video/hero.mp4" type="video/mp4">
+      </video>
+      <div class="hero-overlay" style="position: absolute; inset: 0; background: rgba(10, 10, 15, 0.4); z-index: -1;"></div>
+      
+      <!-- Scene 1: Main Title -->
+      <div class="scene-content" id="scene1" style="position: absolute; text-align: left; width: 100%; max-width: 1200px; padding: 0 5%; z-index: 1; transition: opacity 0.3s, transform 0.3s;">
+        <h1 class="hero-title" style="font-size: clamp(3rem, 8vw, 6rem); line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          The <span class="accent">Ultimate</span> Gaming<br>
+          Laptop <span class="accent">Experience</span>
+        </h1>
+        <p class="hero-subtitle" style="font-size: 1.25rem; max-width: 500px; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+          Pakistan's #1 Gaming Laptop Reseller — Best Prices, Best Quality, No Compromises.
+        </p>
+        <div class="hero-cta" style="margin-top: 40px;">
+          <a href="brands.html" class="btn btn-primary glass">Explore Brands</a>
+          <a href="#featured" class="btn btn-secondary glass" style="margin-left: 10px;">Featured</a>
+        </div>
       </div>
-    </div>
-    <div class="scroll-indicator">
-      <span>Scroll to explore</span>
-      <div class="scroll-arrow">↓</div>
-    </div>
-  </section>
 
-  <!-- Why Choose Us Section -->
-  <section class="section" id="whyUs">
-    <div class="container">
-      <h2 class="section-title animate-on-scroll">Why Choose <span class="accent">LAPTOPIA</span>?</h2>
-      <p class="section-subtitle animate-on-scroll">We're not just sellers — we're gamers who understand what you need</p>
-      <div class="grid grid-3">
-        <div class="glass-card text-center p-6 animate-on-scroll" style="padding: 2rem; text-align: center;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">🏷️</div>
-          <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">Unbeatable Prices</h3>
-          <p style="color: var(--text-muted);">We cut out the middlemen to bring you the best gaming laptops at prices you won't find anywhere else in Pakistan.</p>
-        </div>
-        <div class="glass-card text-center p-6 animate-on-scroll" style="padding: 2rem; text-align: center;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
-          <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">100% Genuine</h3>
-          <p style="color: var(--text-muted);">Every laptop comes with official warranty and guaranteed authenticity. We never compromise on quality.</p>
-        </div>
-        <div class="glass-card text-center p-6 animate-on-scroll" style="padding: 2rem; text-align: center;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">🎮</div>
-          <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">Gamer-First Support</h3>
-          <p style="color: var(--text-muted);">Our team of gaming enthusiasts provides expert advice and after-sales support to keep your rig running perfectly.</p>
-        </div>
+      <!-- Scene 2: Unbeatable Prices -->
+      <div class="scene-content floating-text-block" id="scene2" style="position: absolute; opacity: 0; text-align: left; left: 5%; top: 50%; transform: translateY(50px); max-width: 500px; z-index: 2; pointer-events: none;">
+        <h3 style="font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1; text-shadow: 0 10px 30px rgba(0,0,0,0.8); margin-bottom: 20px;">Unbeatable<br>Prices.</h3>
+        <p style="font-size: 1.2rem; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8);">We cut out the middlemen to bring you the best gaming laptops at prices you won't find anywhere else in Pakistan.</p>
       </div>
+
+      <!-- Scene 3: 100% Genuine -->
+      <div class="scene-content floating-text-block" id="scene3" style="position: absolute; opacity: 0; text-align: right; right: 5%; top: 50%; transform: translateY(50px); max-width: 500px; z-index: 2; pointer-events: none;">
+        <h3 style="font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1; text-shadow: 0 10px 30px rgba(0,0,0,0.8); margin-bottom: 20px;">100%<br>Genuine.</h3>
+        <p style="font-size: 1.2rem; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8);">Every laptop comes with official warranty and guaranteed authenticity. We never compromise on quality.</p>
+      </div>
+      
+      <!-- Scene 4: Support -->
+      <div class="scene-content floating-text-block" id="scene4" style="position: absolute; opacity: 0; text-align: center; width: 100%; top: 40%; transform: translateY(50px); max-width: 700px; z-index: 2; pointer-events: none;">
+        <h3 style="font-size: clamp(3rem, 8vw, 5rem); line-height: 1; text-shadow: 0 10px 30px rgba(0,0,0,0.8); margin-bottom: 20px;">Gamer-First<br>Support.</h3>
+        <p style="font-size: 1.3rem; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8);">Our team of enthusiasts provides expert advice and after-sales support to keep your rig running perfectly.</p>
+      </div>
+      
     </div>
   </section>
 

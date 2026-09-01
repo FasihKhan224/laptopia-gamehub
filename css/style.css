@@ -28,7 +28,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
   opacity: 0;
   transition: opacity 0.5s ease-out;
 }
@@ -346,12 +346,7 @@ ul {
 
 /* Hero Section */
 .hero {
-  height: 100vh;
   position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .hero-video {
