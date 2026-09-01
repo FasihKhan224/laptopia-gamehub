@@ -46,20 +46,19 @@ ul {
   list-style: none;
 }
 
-/* Glass Card System */
-/* Glass Card System */
-.glass, .glass-card, .glass-card-strong {
-  backdrop-filter: blur(20px) saturate(150%) brightness(110%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%) brightness(110%);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+/* visionOS Liquid Glass System */
+.glass, .glass-card, .glass-card-strong, .brand-pill, .menu-btn, .admin-tab, .floating-text-block, .sidebar-link {
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition), background 0.1s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0); /* Force hardware acceleration */
+  will-change: transform, background, box-shadow;
 }
 
 .glass-card {
@@ -67,33 +66,36 @@ ul {
 }
 
 .glass-card-strong {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.glass::before, .glass-card::before, .glass-card-strong::before {
+/* Mouse hover reflection effect */
+.glass::before, .glass-card::before, .glass-card-strong::before, .brand-pill::before, .menu-btn::before, .admin-tab::before, .floating-text-block::before, .sidebar-link::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1), transparent 40%);
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15), transparent 40%);
   z-index: -1;
   pointer-events: none;
   transition: opacity 0.3s;
   opacity: 0;
 }
 
-.glass:hover::before, .glass-card:hover::before, .glass-card-strong:hover::before {
+.glass:hover::before, .glass-card:hover::before, .glass-card-strong:hover::before, .brand-pill:hover::before, .menu-btn:hover::before, .admin-tab:hover::before, .floating-text-block:hover::before, .sidebar-link:hover::before {
   opacity: 1;
 }
 
-.glass:active, .glass-card:active, .glass-card-strong:active {
-  background: rgba(0, 212, 255, 0.15); /* Color change on click */
-  transform: translateY(2px) scale(0.98);
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
+/* Interaction States */
+.glass:hover, .glass-card:hover, .glass-card-strong:hover, .brand-pill:hover, .menu-btn:hover, .admin-tab:hover, .floating-text-block:hover, .sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.03) translateZ(0);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
-.glass-card:hover:not(:active) {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 212, 255, 0.15);
+.glass:active, .glass-card:active, .glass-card-strong:active, .brand-pill:active, .menu-btn:active, .admin-tab:active, .floating-text-block:active, .sidebar-link:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0.98) translateZ(0) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
 }
 
 /* Navbar Styles */
@@ -420,36 +422,51 @@ ul {
 }
 
 /* Buttons */
+/* visionOS Liquid Glass Interactive Buttons */
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 12px 28px;
-  border-radius: 12px;
   font-weight: 600;
-  border: none;
   cursor: pointer;
-  transition: all var(--transition);
   font-size: 0.95rem;
-  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  
+  /* visionOS Liquid Glass Specs */
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  
+  /* Performance and Transitions */
+  transform: translateZ(0); /* Force hardware acceleration */
+  will-change: transform, background, box-shadow;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.03) translateZ(0);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0.98) translateZ(0) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Specific variants can just slightly tint the glass */
 .btn-primary {
-  background: var(--gradient);
-  color: white;
-}
-
-.btn-primary:hover {
-  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
-  transform: scale(1.02);
+  border-color: rgba(0, 212, 255, 0.4);
 }
 
 .btn-secondary {
-  background: var(--glass-bg);
-  color: var(--accent);
-  border: 1px solid var(--accent);
-}
-
-.btn-secondary:hover {
-  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .btn-whatsapp {

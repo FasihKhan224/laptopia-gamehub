@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Refractive Glass Hover Effect
   document.addEventListener('mousemove', (e) => {
-    document.querySelectorAll('.glass, .glass-card, .glass-card-strong, .menu-btn, .btn').forEach(el => {
+    document.querySelectorAll('.glass, .glass-card, .glass-card-strong, .menu-btn, .btn, .brand-pill, .admin-tab, .floating-text-block, .sidebar-link').forEach(el => {
       const rect = el.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
