@@ -1,39 +1,86 @@
-// Scroll-synced video controller — rewritten for buttery smooth playback
-// Inspired by anime.js / Apple-style scroll-driven video scrubbing
+// Canvas image-sequence scroll controller — powered by GSAP ScrollTrigger
+// Industry-standard approach: preloaded .webp frames painted on <canvas>
 
-document.addEventListener('DOMContentLoaded', () => {
-  const heroVideo  = document.getElementById('heroVideo');
-  const heroSection = document.getElementById('heroSection');
+(function () {
+  'use strict';
 
-  if (!heroVideo || !heroSection) return;
+  // ---- Config ----
+  const FRAME_COUNT  = 150;                           // total frames extracted at 30fps
+  const FRAME_PATH   = 'assets/frames/frame_';        // prefix
+  const FRAME_EXT    = '.webp';
+  const PAD          = 4;                              // zero-pad width  → frame_0001.webp
 
-  heroVideo.pause();
+  // ---- DOM ----
+  const canvas  = document.getElementById('heroCanvas');
+  const section = document.getElementById('heroSection');
+  if (!canvas || !section) return;
+
+  const ctx = canvas.getContext('2d');
+
+  // ---- Frame name helper ----
+  const frameSrc = (i) =>
+    `${FRAME_PATH}${String(i + 1).padStart(PAD, '0')}${FRAME_EXT}`;
 
   // ---- State ----
-  let videoDuration = 0;
-  let targetTime    = 0;
-  let currentTime   = 0;
-  let rafId         = null;
+  const images  = new Array(FRAME_COUNT);
+  const frameObj = { current: 0 };   // GSAP will tween this
+  let   loaded  = 0;
+  let   firstFrame = null;
 
-  // ---- Preload & buffer the entire video ----
-  const ensureLoaded = () => {
+  // ---- Resize: keep canvas pixel-perfect ----
+  const resize = () => {
+    canvas.width  = canvas.offsetWidth  * devicePixelRatio;
+    canvas.height = canvas.offsetHeight * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    drawFrame(frameObj.current);
+  };
+  window.addEventListener('resize', resize);
+
+  // ---- Draw with object-fit: cover logic ----
+  const drawFrame = (index) => {
+    const img = images[Math.round(index)];
+    if (!img || !img.complete) return;
+
+    const cw = canvas.offsetWidth;
+    const ch = canvas.offsetHeight;
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+
+    // object-fit: cover — fill canvas, crop overflow
+    const scale = Math.max(cw / iw, ch / ih);
+    const dw = iw * scale;
+    const dh = ih * scale;
+    const dx = (cw - dw) / 2;
+    const dy = (ch - dh) / 2;
+
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(img, dx, dy, dw, dh);
+  };
+
+  // ---- Preload all frames ----
+  const preload = () => {
     return new Promise((resolve) => {
-      if (heroVideo.readyState >= 2) {
-        videoDuration = heroVideo.duration;
-        return resolve();
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        const img  = new Image();
+        img.src    = frameSrc(i);
+        img.onload = () => {
+          loaded++;
+          if (i === 0) {
+            firstFrame = img;
+            resize();                       // paint first frame immediately
+          }
+          if (loaded === FRAME_COUNT) resolve();
+        };
+        img.onerror = () => {
+          loaded++;
+          if (loaded === FRAME_COUNT) resolve();
+        };
+        images[i] = img;
       }
-      heroVideo.addEventListener('loadeddata', () => {
-        videoDuration = heroVideo.duration;
-        resolve();
-      }, { once: true });
-
-      // Trick: briefly play then immediately pause to force the browser
-      // to start downloading the whole file, not just the first chunk.
-      heroVideo.play().then(() => heroVideo.pause()).catch(() => {});
     });
   };
 
-  // ---- Scene transition helpers ----
+  // ---- Scene text transitions (driven by ScrollTrigger progress) ----
   const scene1 = document.getElementById('scene1');
   const scene2 = document.getElementById('scene2');
   const scene3 = document.getElementById('scene3');
@@ -45,24 +92,20 @@ document.addEventListener('DOMContentLoaded', () => {
     el.style.transform  = `translateY(${y}px)`;
   };
 
-  const updateSceneRange = (el, scrollPct, start, end) => {
+  const rangeScene = (el, pct, start, end) => {
     if (!el) return;
-    if (scrollPct < start || scrollPct >= end) {
-      setScene(el, 0, 50);
-      return;
-    }
+    if (pct < start || pct >= end) { setScene(el, 0, 50); return; }
     const mid = (start + end) / 2;
-    if (scrollPct < mid) {
-      const p = (scrollPct - start) / (mid - start);
+    if (pct < mid) {
+      const p = (pct - start) / (mid - start);
       setScene(el, p, 50 * (1 - p));
     } else {
-      const p = (scrollPct - mid) / (end - mid);
+      const p = (pct - mid) / (end - mid);
       setScene(el, 1 - p, -(p * 60));
     }
   };
 
   const updateScenes = (pct) => {
-    // Scene 1: visible 0–25 %, fades out
     if (scene1) {
       if (pct < 0.25) {
         const p = pct / 0.25;
@@ -71,12 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setScene(scene1, 0, -80);
       }
     }
-
-    // Scenes 2–3 fade in then out across their ranges
-    updateSceneRange(scene2, pct, 0.18, 0.48);
-    updateSceneRange(scene3, pct, 0.42, 0.72);
-
-    // Scene 4: fades in from 68 % and stays until end
+    rangeScene(scene2, pct, 0.18, 0.48);
+    rangeScene(scene3, pct, 0.42, 0.72);
     if (scene4) {
       if (pct >= 0.68) {
         const p = Math.min(1, (pct - 0.68) / 0.18);
@@ -87,50 +126,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ---- Scroll → target time ----
-  const onScroll = () => {
-    if (!videoDuration) return;
-
-    const rect     = heroSection.getBoundingClientRect();
-    const maxScroll = heroSection.offsetHeight - window.innerHeight;
-    const scrolled  = Math.max(0, -rect.top);
-    const pct       = Math.min(1, Math.max(0, scrolled / maxScroll));
-
-    targetTime = pct * videoDuration;
-    updateScenes(pct);
-
-    // Kick the lerp loop if not already running
-    if (!rafId) rafId = requestAnimationFrame(tick);
-  };
-
-  // ---- Lerp loop (runs at display refresh rate) ----
-  const LERP_SPEED = 0.08;          // lower = smoother, higher = snappier
-  const EPSILON    = 0.01;           // seconds – stop threshold
-
-  const tick = () => {
-    const diff = targetTime - currentTime;
-
-    if (Math.abs(diff) > EPSILON) {
-      currentTime += diff * LERP_SPEED;
-      heroVideo.currentTime = currentTime;
-      rafId = requestAnimationFrame(tick);
-    } else {
-      // Close enough – snap and stop
-      currentTime = targetTime;
-      heroVideo.currentTime = currentTime;
-      rafId = null;
-    }
-  };
-
   // ---- Bootstrap ----
-  ensureLoaded().then(() => {
-    currentTime = 0;
-    heroVideo.currentTime = 0;
+  preload().then(() => {
+    resize();
 
-    // Use passive listener for best scroll perf
-    window.addEventListener('scroll', onScroll, { passive: true });
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Initial paint
-    onScroll();
+    // Main timeline: scrub frameObj.current from 0 → FRAME_COUNT-1
+    gsap.to(frameObj, {
+      current: FRAME_COUNT - 1,
+      ease: 'none',
+      snap: { current: 1 },            // snap to integer frame indices
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5,                     // 0.5s catch-up for buttery feel
+        onUpdate: (self) => {
+          drawFrame(frameObj.current);
+          updateScenes(self.progress);
+        },
+      },
+    });
   });
-});
+
+  // Paint something immediately while frames load
+  resize();
+})();

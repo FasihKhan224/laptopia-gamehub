@@ -8,6 +8,9 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <!-- GSAP + ScrollTrigger for scroll-driven canvas animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
   <nav class="navbar">
@@ -52,12 +55,10 @@
   </aside>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- Hero Section with cinematic scroll video -->
+  <!-- Hero Section with cinematic scroll canvas -->
   <section class="hero" id="heroSection" style="height: 400vh;">
     <div class="hero-sticky-container">
-      <video id="heroVideo" muted playsinline preload="auto" class="hero-video">
-        <source src="assets/video/hero.mp4" type="video/mp4">
-      </video>
+      <canvas id="heroCanvas" class="hero-canvas"></canvas>
       <div class="hero-overlay"></div>
 
       <!-- Scene 1: Main Title -->

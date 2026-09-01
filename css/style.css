@@ -360,14 +360,14 @@ ul {
   justify-content: center;
 }
 
-.hero-video {
+.hero-canvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   z-index: -2;
+  /* object-fit: contain logic is handled in JS via drawImage centering */
 }
 
 .hero-overlay {
