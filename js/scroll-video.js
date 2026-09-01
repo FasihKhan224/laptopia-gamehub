@@ -1,140 +1,136 @@
-// Scroll-synced video controller
+// Scroll-synced video controller — rewritten for buttery smooth playback
+// Inspired by anime.js / Apple-style scroll-driven video scrubbing
 
 document.addEventListener('DOMContentLoaded', () => {
-  const heroVideo = document.getElementById('heroVideo');
-  const heroSection = document.querySelector('.hero');
-  const heroContent = document.querySelector('.hero-content');
-  
+  const heroVideo  = document.getElementById('heroVideo');
+  const heroSection = document.getElementById('heroSection');
+
   if (!heroVideo || !heroSection) return;
 
-  // Ensure video is paused
   heroVideo.pause();
 
-  let isVideoLoaded = false;
-  
-  heroVideo.addEventListener('loadedmetadata', () => {
-    isVideoLoaded = true;
-    heroVideo.pause(); // Just to be sure
-  });
+  // ---- State ----
+  let videoDuration = 0;
+  let targetTime    = 0;
+  let currentTime   = 0;
+  let rafId         = null;
 
-  // Preload video if possible
-  if (heroVideo.readyState >= 1) {
-    isVideoLoaded = true;
-  }
+  // ---- Preload & buffer the entire video ----
+  const ensureLoaded = () => {
+    return new Promise((resolve) => {
+      if (heroVideo.readyState >= 2) {
+        videoDuration = heroVideo.duration;
+        return resolve();
+      }
+      heroVideo.addEventListener('loadeddata', () => {
+        videoDuration = heroVideo.duration;
+        resolve();
+      }, { once: true });
 
-  let ticking = false;
+      // Trick: briefly play then immediately pause to force the browser
+      // to start downloading the whole file, not just the first chunk.
+      heroVideo.play().then(() => heroVideo.pause()).catch(() => {});
+    });
+  };
 
-    let targetTime = 0;
-    
-    // Lerp state
-    if (typeof window.videoLerpState === 'undefined') {
-      window.videoLerpState = {
-        currentTime: 0,
-        animating: false
-      };
+  // ---- Scene transition helpers ----
+  const scene1 = document.getElementById('scene1');
+  const scene2 = document.getElementById('scene2');
+  const scene3 = document.getElementById('scene3');
+  const scene4 = document.getElementById('scene4');
+
+  const setScene = (el, opacity, y) => {
+    if (!el) return;
+    el.style.opacity   = opacity;
+    el.style.transform  = `translateY(${y}px)`;
+  };
+
+  const updateSceneRange = (el, scrollPct, start, end) => {
+    if (!el) return;
+    if (scrollPct < start || scrollPct >= end) {
+      setScene(el, 0, 50);
+      return;
     }
+    const mid = (start + end) / 2;
+    if (scrollPct < mid) {
+      const p = (scrollPct - start) / (mid - start);
+      setScene(el, p, 50 * (1 - p));
+    } else {
+      const p = (scrollPct - mid) / (end - mid);
+      setScene(el, 1 - p, -(p * 60));
+    }
+  };
 
-    const updateVideoOnScroll = () => {
-      if (!isVideoLoaded || !heroVideo.duration) return;
-
-      const heroRect = heroSection.getBoundingClientRect();
-      // Total scrollable distance is hero height - viewport height
-      const maxScroll = heroSection.offsetHeight - window.innerHeight;
-      
-      let scrollPercent = 0;
-      if (heroRect.top < 0) {
-        scrollPercent = Math.abs(heroRect.top) / maxScroll;
-      }
-      
-      scrollPercent = Math.max(0, Math.min(1, scrollPercent));
-      targetTime = scrollPercent * heroVideo.duration;
-
-      // Parallax effect and scene transitions
-      const scene1 = document.getElementById('scene1');
-      const scene2 = document.getElementById('scene2');
-      const scene3 = document.getElementById('scene3');
-      const scene4 = document.getElementById('scene4');
-      
-      if (scene1) {
-        // Scene 1: 0% to 25%
-        if (scrollPercent < 0.25) {
-          const progress = scrollPercent / 0.25;
-          scene1.style.opacity = 1 - progress;
-          scene1.style.transform = `translateY(${progress * -100}px)`;
-        } else {
-          scene1.style.opacity = 0;
-        }
-      }
-      
-      const updateScene = (scene, start, end) => {
-        if (!scene) return;
-        if (scrollPercent >= start && scrollPercent < end) {
-          // Fade in first half, fade out second half
-          const mid = start + (end - start) / 2;
-          let opacity = 0;
-          let y = 50;
-          
-          if (scrollPercent < mid) {
-            // Fade in
-            const progress = (scrollPercent - start) / (mid - start);
-            opacity = progress;
-            y = 50 - (progress * 50);
-          } else {
-            // Fade out
-            const progress = (scrollPercent - mid) / (end - mid);
-            opacity = 1 - progress;
-            y = -(progress * 50);
-          }
-          scene.style.opacity = opacity;
-          scene.style.transform = `translateY(${y}px)`;
-        } else {
-          scene.style.opacity = 0;
-        }
-      };
-
-      updateScene(scene2, 0.20, 0.50);
-      updateScene(scene3, 0.45, 0.75);
-      
-      if (scene4) {
-        // Scene 4: 0.70 to 1.0
-        if (scrollPercent >= 0.70) {
-          const progress = Math.min(1, (scrollPercent - 0.70) / 0.20);
-          scene4.style.opacity = progress;
-          scene4.style.transform = `translateY(${50 - (progress * 50)}px)`;
-        } else {
-          scene4.style.opacity = 0;
-        }
-      }
-      
-      if (!window.videoLerpState.animating) {
-        window.videoLerpState.animating = true;
-        requestAnimationFrame(lerpVideo);
-      }
-      
-      ticking = false;
-    };
-
-    const lerpVideo = () => {
-      const diff = targetTime - window.videoLerpState.currentTime;
-      // Smoothly approach the target time (adjust 0.1 for more/less smoothing)
-      window.videoLerpState.currentTime += diff * 0.1;
-      
-      // Apply to video
-      if (Math.abs(diff) > 0.01) {
-        heroVideo.currentTime = window.videoLerpState.currentTime;
-        requestAnimationFrame(lerpVideo);
+  const updateScenes = (pct) => {
+    // Scene 1: visible 0–25 %, fades out
+    if (scene1) {
+      if (pct < 0.25) {
+        const p = pct / 0.25;
+        setScene(scene1, 1 - p, p * -80);
       } else {
-        window.videoLerpState.animating = false;
+        setScene(scene1, 0, -80);
       }
-    };
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(updateVideoOnScroll);
-      ticking = true;
     }
-  });
 
-  // Initial update
-  updateVideoOnScroll();
+    // Scenes 2–3 fade in then out across their ranges
+    updateSceneRange(scene2, pct, 0.18, 0.48);
+    updateSceneRange(scene3, pct, 0.42, 0.72);
+
+    // Scene 4: fades in from 68 % and stays until end
+    if (scene4) {
+      if (pct >= 0.68) {
+        const p = Math.min(1, (pct - 0.68) / 0.18);
+        setScene(scene4, p, 50 * (1 - p));
+      } else {
+        setScene(scene4, 0, 50);
+      }
+    }
+  };
+
+  // ---- Scroll → target time ----
+  const onScroll = () => {
+    if (!videoDuration) return;
+
+    const rect     = heroSection.getBoundingClientRect();
+    const maxScroll = heroSection.offsetHeight - window.innerHeight;
+    const scrolled  = Math.max(0, -rect.top);
+    const pct       = Math.min(1, Math.max(0, scrolled / maxScroll));
+
+    targetTime = pct * videoDuration;
+    updateScenes(pct);
+
+    // Kick the lerp loop if not already running
+    if (!rafId) rafId = requestAnimationFrame(tick);
+  };
+
+  // ---- Lerp loop (runs at display refresh rate) ----
+  const LERP_SPEED = 0.08;          // lower = smoother, higher = snappier
+  const EPSILON    = 0.01;           // seconds – stop threshold
+
+  const tick = () => {
+    const diff = targetTime - currentTime;
+
+    if (Math.abs(diff) > EPSILON) {
+      currentTime += diff * LERP_SPEED;
+      heroVideo.currentTime = currentTime;
+      rafId = requestAnimationFrame(tick);
+    } else {
+      // Close enough – snap and stop
+      currentTime = targetTime;
+      heroVideo.currentTime = currentTime;
+      rafId = null;
+    }
+  };
+
+  // ---- Bootstrap ----
+  ensureLoaded().then(() => {
+    currentTime = 0;
+    heroVideo.currentTime = 0;
+
+    // Use passive listener for best scroll perf
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Initial paint
+    onScroll();
+  });
 });

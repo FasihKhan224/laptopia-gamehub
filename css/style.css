@@ -344,43 +344,49 @@ ul {
   font-weight: 700;
 }
 
-/* Hero Section */
+/* Hero Section — Cinematic Sticky Scroll */
 .hero {
   position: relative;
 }
 
+.hero-sticky-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .hero-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 100%;
-  min-height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(10, 10, 15, 0.3), rgba(10, 10, 15, 0.8) 70%, rgba(10, 10, 15, 1));
-  z-index: 0;
+  background: rgba(10, 10, 15, 0.35);
+  z-index: -1;
 }
 
-.hero-content {
-  position: relative;
+.scene-content {
+  position: absolute;
   z-index: 1;
-  text-align: center;
-  max-width: 800px;
-  padding: 0 20px;
+  will-change: opacity, transform;
 }
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 700;
   line-height: 1.1;
-  margin-bottom: 20px;
 }
 
 .accent {
@@ -393,27 +399,12 @@ ul {
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  margin-top: 20px;
-  max-width: 600px;
-  margin-inline: auto;
+  color: rgba(255,255,255,0.8);
 }
 
 .hero-cta {
   display: inline-flex;
   gap: 16px;
-  margin-top: 40px;
-}
-
-.scroll-indicator {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: bounce 2s infinite;
-  color: var(--text-muted);
-  font-size: 1.5rem;
 }
 
 /* Buttons */
